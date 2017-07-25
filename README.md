@@ -1,2 +1,2 @@
-# kamernet-slack
-A bot scrapping Kamernet, and posting the results on Slack.
+# apartment-hunt
+A bot scrapping Kamernet, and posting the results to Slack or Twilio.
