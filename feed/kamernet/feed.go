@@ -14,8 +14,9 @@ import (
 func NewKamernetFeed(ctx context.Context, logCtx log.Interface, city string) feed.Feed {
 	apartments := make(chan feed.Apartment)
 	k := &kamernetFeed{
-		channel: apartments,
-		city:    city,
+		channel:          apartments,
+		city:             city,
+		seenApartmentIds: make([]string, 0),
 	}
 
 	go func() {
@@ -57,7 +58,7 @@ type kamernetFeed struct {
 
 	city string
 
-	latestID string
+	seenApartmentIds []string
 }
 
 func (k *kamernetFeed) Apartments() chan feed.Apartment {
@@ -73,14 +74,17 @@ func (k *kamernetFeed) FetchNewApartments() (newApartments []feed.Apartment, err
 		return
 	}
 
-	for i, apt := range apartments {
-		if apt.Id == k.latestID {
-			break
+newApartmentsLoop:
+	for _, apt := range apartments {
+		for _, seenAptId := range k.seenApartmentIds {
+			if seenAptId == apt.Id {
+				// Already seen this apt!
+				continue newApartmentsLoop
+			}
 		}
-		if i == 0 {
-			k.latestID = apt.Id
-		}
+
 		newApartments = append(newApartments, apt)
+		k.seenApartmentIds = append(k.seenApartmentIds, apt.Id)
 	}
 	return newApartments, nil
 }
