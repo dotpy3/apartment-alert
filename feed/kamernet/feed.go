@@ -36,6 +36,7 @@ func NewKamernetFeed(ctx context.Context, logCtx log.Interface, city string) fee
 				if !passedFirst {
 					logCtx.Info("Received first batch of apartments, looking for new apartments...")
 					passedFirst = true
+					continue
 				}
 
 				if len(newApartments) == 0 {
