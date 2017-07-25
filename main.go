@@ -1,20 +1,36 @@
 package main
 
 import (
-	"context"
+	"fmt"
+	"strings"
 
-	ttnlog "github.com/TheThingsNetwork/go-utils/log"
-	"github.com/TheThingsNetwork/packet_forwarder/util"
-	"github.com/dotpy3/apartment-alert/feed/kamernet"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	log := util.GetLogger()
-	f := kamernet.NewKamernetFeed(context.Background(), log, "amsterdam")
-	for apt := range f.Apartments() {
-		log.WithFields(ttnlog.Fields{
-			"Address": apt.Address,
-			"Price":   apt.Price,
-		}).Info("ZOMG NEW APARTMENT")
+	if err := startCmd.Execute(); err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+
+	viper.SetConfigType("yaml")
+	viper.SetConfigName(".apartment-alert")
+	viper.AddConfigPath("$HOME")
+	viper.SetEnvPrefix("apartment-alert")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
+	viper.AutomaticEnv()
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println("Error when reading config file:", err)
+	} else {
+		fmt.Println("Using config file")
 	}
 }
