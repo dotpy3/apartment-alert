@@ -44,7 +44,10 @@ var startCmd = &cobra.Command{
 				log.WithField("Address", apt.Address).WithField("Price", apt.Price).Info("New apartment detected")
 			}
 			for _, alerter := range alerters {
-				alerter.Push(feed.Apartment{Address: apt.Address, Postcode: apt.Postcode, Price: apt.Price})
+				err := alerter.Push(feed.Apartment{Address: apt.Address, Postcode: apt.Postcode, Price: apt.Price})
+				if err != nil {
+					log.WithError(err).Error("Couldn't alert of new apartment")
+				}
 			}
 		}
 
