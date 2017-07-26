@@ -1,2 +1,29 @@
-# apartment-hunt
-A bot scrapping Kamernet, and posting the results to Slack or Twilio.
+# Apartment Alerter
+A program scrapping Kamernet, and alerting you by text (using Twilio). If you're looking for a room in Amsterdam, this might help you.
+
+## Run with Docker
+1. Create a configuration file, like this one:
+
+```yaml
+twilio:
+  enable: true
+  from-number: "<from number, registered in Twilio>"
+  to-number: "<to number>"
+  sid: "<Twilio SID>"
+  token: "<Twilio Auth Token>"
+```
+
+To see more configuration options, run `docker run ericgln/apartment-alert --help`.
+
+2. Run:
+```sh
+docker run -d -v '/PATH/TO/CONFIG/FILE.yml:/root/.apartment-alert/yml' ericgln/apartment-alert
+```
+
+This will run the program in the background.
+
+## How this could be made better
+Currently, the program only scraps Kamernet. It would be really awesome if we could also scrap all the private Facebook groups (Amsterdam Apartments, Rooms in Amsterdam...) where there are room postings.
+
+## Do you know of a room in Amsterdam?
+I made this program because it's super hard to find a room at a reasonable price in Amsterdam. Send me an e-mail at [gourlaoueneric@gmail.com](mailto:gourlaoueneric@gmail.com) if you know of one!
