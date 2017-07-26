@@ -21,3 +21,6 @@ docker run -d -v '/PATH/TO/CONFIG/FILE.yml:/root/.apartment-alert/yml' ericgln/a
 ```
 
 This will run the program in the background.
+
+## Do you know of a room in Amsterdam?
+I made this program because it's super hard to find a room at a reasonable price in Amsterdam. Send me an e-mail at [gourlaoueneric@gmail.com](mailto:gourlaoueneric@gmail.com) if you know of one!
