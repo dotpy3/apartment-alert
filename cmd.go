@@ -6,7 +6,6 @@ import (
 	"github.com/TheThingsNetwork/packet_forwarder/util"
 	"github.com/dotpy3/apartment-alert/alerts"
 	"github.com/dotpy3/apartment-alert/alerts/twilio"
-	"github.com/dotpy3/apartment-alert/feed"
 	"github.com/dotpy3/apartment-alert/feed/kamernet"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -44,7 +43,7 @@ var startCmd = &cobra.Command{
 				log.WithField("Address", apt.Address).WithField("Price", apt.Price).Info("New apartment detected")
 			}
 			for _, alerter := range alerters {
-				err := alerter.Push(feed.Apartment{Address: apt.Address, Postcode: apt.Postcode, Price: apt.Price})
+				err := alerter.Push(apt)
 				if err != nil {
 					log.WithError(err).Error("Couldn't alert of new apartment")
 				}

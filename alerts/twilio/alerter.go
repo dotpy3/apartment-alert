@@ -25,7 +25,8 @@ func Alerter(sid, token, fromNumber, toNumber string) alerts.ApartmentAlerter {
 
 func (a *twilioAlerter) Push(apt feed.Apartment) error {
 	_, _, err := a.cli.SendSMS(a.fromNumber, a.toNumber,
-		fmt.Sprintf("A new apartment is available at %s (%s), for a price of %s!", apt.Address, apt.Postcode, apt.Price),
+		fmt.Sprintf(`A new apartment is available at %s (%s), for a price of %s!
+Learn more about it here: https://kamernet.nl/en/details/%s/searchalladverts`, apt.Address, apt.Postcode, apt.Price, apt.Id),
 		"", "")
 	return errors.Wrap(err, "couldn't send SMS")
 }
