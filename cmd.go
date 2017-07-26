@@ -44,7 +44,7 @@ var startCmd = &cobra.Command{
 				log.WithField("Address", apt.Address).WithField("Price", apt.Price).Info("New apartment detected")
 			}
 			for _, alerter := range alerters {
-				alerter.Push(feed.Apartment{Address: "Herengracht", Postcode: "1016BR", Price: "€500,-"})
+				alerter.Push(feed.Apartment{Address: apt.Address, Postcode: apt.Postcode, Price: apt.Price})
 			}
 		}
 
